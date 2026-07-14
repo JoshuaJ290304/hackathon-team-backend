@@ -3,13 +3,14 @@ const TeamModel = require("../models/TeamModel");
 
 const router = express.Router();
 
+// Add Team
 router.post("/add-team", async (req, res) => {
 
     try {
 
-        const data = new TeamModel(req.body);
+        const team = new TeamModel(req.body);
 
-        await data.save();
+        await team.save();
 
         res.json({
             status: "success",
@@ -20,7 +21,27 @@ router.post("/add-team", async (req, res) => {
 
         res.json({
             status: "error",
-            message: error
+            message: error.message
+        });
+
+    }
+
+});
+
+// View All Teams (POST)
+router.post("/view-team", async (req, res) => {
+
+    try {
+
+        const data = await TeamModel.find();
+
+        res.json(data);
+
+    } catch (error) {
+
+        res.json({
+            status: "error",
+            message: error.message
         });
 
     }
